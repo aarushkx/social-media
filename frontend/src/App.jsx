@@ -1,5 +1,7 @@
 import React from "react";
-import { SignUp, Login } from "./pages/index.js";
+
+import SignUp from "./pages/SignUp";
+import Login from "./pages/Login";
 
 function App() {
     return (
