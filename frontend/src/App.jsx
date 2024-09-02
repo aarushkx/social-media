@@ -1,8 +1,11 @@
+import React from "react";
+import { SignUp, Login } from "./pages/index.js";
+
 function App() {
     return (
         <>
-            <h1>Hello World</h1>
-            <button className="btn">Click</button>
+            <SignUp />
+            <Login />
         </>
     );
 }
