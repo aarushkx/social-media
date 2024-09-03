@@ -6,5 +6,16 @@ import Footer from "./Footer/Footer";
 import SignUpForm from "./Form/SignUpForm";
 import LoginForm from "./Form/LoginForm";
 import Post from "./Post";
+import BottomNavbar from "./BottomNavbar";
 
-export { Container, Header, Logo, Search, Footer, SignUpForm, LoginForm, Post };
+export {
+    Container,
+    Header,
+    Logo,
+    Search,
+    Footer,
+    SignUpForm,
+    LoginForm,
+    Post,
+    BottomNavbar,
+};
