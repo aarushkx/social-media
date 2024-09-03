@@ -27,7 +27,7 @@ function LoginForm() {
                         />
                     </div>
                     <div className="form-control mt-6">
-                        <button className="btn btn-primary w-full  text-lg">
+                        <button className="btn btn-primary w-full text-lg">
                             Log In
                         </button>
                     </div>
