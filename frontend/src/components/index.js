@@ -9,6 +9,7 @@ import Post from "./Post";
 import BottomNavbar from "./BottomNavbar";
 import Create from "./Create";
 import EditProfileModal from "./Modal/EditProfileModal";
+import Protected from "./Protected";
 
 export {
     Container,
@@ -22,4 +23,5 @@ export {
     BottomNavbar,
     Create,
     EditProfileModal,
+    Protected,
 };
