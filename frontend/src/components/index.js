@@ -7,6 +7,8 @@ import SignUpForm from "./Form/SignUpForm";
 import LoginForm from "./Form/LoginForm";
 import Post from "./Post";
 import BottomNavbar from "./BottomNavbar";
+import Create from "./Create";
+import EditProfileModal from "./Modal/EditProfileModal";
 
 export {
     Container,
@@ -18,4 +20,6 @@ export {
     LoginForm,
     Post,
     BottomNavbar,
+    Create,
+    EditProfileModal,
 };

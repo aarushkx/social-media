@@ -1,5 +1,5 @@
-import React from "react";
-import { Search } from "../components/index.js";
+import React, { useState } from "react";
+import { Search, EditProfileModal } from "../components/index.js";
 
 function Profile() {
     const user = {
@@ -29,6 +29,8 @@ function Profile() {
             { id: 15, image: "https://via.placeholder.com/300" },
         ],
     };
+
+    const [isEditProfileModalOpen, setEditProfileModalOpen] = useState(false);
 
     return (
         <>
@@ -62,9 +64,17 @@ function Profile() {
 
                         {/* Edit Profile Button */}
                         <div className="mb-8">
-                            <button className="btn btn-outline btn-sm text-sm">
+                            <button
+                                className="btn btn-outline btn-sm text-sm"
+                                onClick={() => setEditProfileModalOpen(true)}
+                            >
                                 Edit Profile
                             </button>
+
+                            <EditProfileModal
+                                isOpen={isEditProfileModalOpen}
+                                onClose={() => setEditProfileModalOpen(false)}
+                            />
                         </div>
 
                         <div className="flex space-x-4 justify-center lg:justify-start">
