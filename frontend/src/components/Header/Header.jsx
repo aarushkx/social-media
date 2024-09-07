@@ -21,15 +21,13 @@ function Header({ isSliding }) {
     }, []);
 
     return (
-        // <div
-        //     className={`header bg-base-300 p-4 fixed top-0 w-full z-10 transition-transform duration-300 ${
-        //         isVisible ? "translate-y-0" : "-translate-y-full"
-        //     }`}
-        // >
-
         <div
             className={`header bg-base-300 p-4 fixed top-0 w-full z-10 ${
-                isSliding ? `transition-transform duration-300 ${isVisible ? "translate-y-0" : "-translate-y-full"}` : ""
+                isSliding
+                    ? `transition-transform duration-300 ${
+                          isVisible ? "translate-y-0" : "-translate-y-full"
+                      }`
+                    : ""
             }`}
         >
             <Logo />
@@ -38,4 +36,3 @@ function Header({ isSliding }) {
 }
 
 export default Header;
-// header bg-base-300 p-4
