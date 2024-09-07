@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { BottomNavbar } from "./components/index.js";
+import { BottomNavbar, Footer } from "./components/index.js";
 import { Outlet } from "react-router-dom";
 
 function App() {

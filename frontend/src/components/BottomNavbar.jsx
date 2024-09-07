@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 
 function BottomNavbar() {
     // const authStatus = useSelector((state) => state.auth.status);
-    const authStatus = true;
+    const authStatus = false;
     const navigate = useNavigate();
     const [activeButton, setActiveButton] = useState("home");
 
@@ -36,11 +36,10 @@ function BottomNavbar() {
     ];
 
     return (
-        // <div className="btm-nav bg-base-100 border-t border-gray-700 flex justify-between items-center p-3 z-50 fixed bottom-0 left-0 right-0">
         <div
-            className={`btm-nav bg-base-100 flex justify-between items-center p-3 z-50 fixed bottom-0 left-0 right-0 ${
-                authStatus ? "border-t border-gray-700" : ""
-            }`}
+            className={`btm-nav bg-base-100 max-h-12 flex justify-between items-center p-4 z-99 fixed bottom-0 left-0 right-0 
+                ${authStatus ? "border-t border-gray-700" : ""} 
+                ${!authStatus ? "opacity-0" : ""}`}
         >
             {items.map((item, index) =>
                 item.isActive ? (
@@ -57,7 +56,7 @@ function BottomNavbar() {
                         }`}
                     >
                         {item.icon}
-                        <span className="text-xs">{item.name}</span>
+                        {/* <span className="text-xs">{item.name}</span> */}
                     </button>
                 ) : null
             )}
