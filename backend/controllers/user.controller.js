@@ -1,6 +1,7 @@
 import { asyncHandler } from "../utils/handlers/asyncHandler.js";
 import { v2 as cloudinary } from "cloudinary";
 import User from "../models/user.model.js";
+import Post from "../models/post.model.js";
 import bcrypt from "bcrypt";
 import { hashString } from "../utils/hash/hashString.js";
 
@@ -192,4 +193,46 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
     user.password = null;
 
     return res.status(200).json(user);
+});
+
+export const deleteUserAccount = asyncHandler(async (req, res) => {
+    const userId = req.user._id;
+    const user = await User.findById(userId);
+
+    if (!user) {
+        return res.status(404).json({
+            error: "User not found",
+        });
+    }
+
+    const userPosts = await Post.find({ user: userId });
+
+    if (userPosts.length > 0) {
+        const imageDeletions = userPosts.map(async (post) => {
+            const imageId = post.image.split("/").pop().split(".")[0];
+            await cloudinary.uploader.destroy(imageId);
+            await Post.findByIdAndDelete(post._id);
+        });
+        await Promise.all(imageDeletions);
+    }
+
+    if (user.avatar) {
+        const avatarId = user.avatar.split("/").pop().split(".")[0];
+        await cloudinary.uploader.destroy(avatarId);
+    }
+
+    await User.updateMany(
+        { followers: userId },
+        { $pull: { followers: userId } }
+    );
+    await User.updateMany(
+        { following: userId },
+        { $pull: { following: userId } }
+    );
+
+    await User.findByIdAndDelete(userId);
+
+    return res.status(200).json({
+        message: "Account deleted successfully",
+    });
 });
