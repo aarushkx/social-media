@@ -2,6 +2,7 @@ import { asyncHandler } from "../utils/handlers/asyncHandler.js";
 import bcrypt from "bcrypt";
 import User from "../models/user.model.js";
 import { generateTokenAndSetCookie } from "../utils/tokens/token.js";
+import { hashString } from "../utils/hash/hashString.js";
 
 export const signup = asyncHandler(async (req, res) => {
     try {
@@ -62,14 +63,11 @@ export const signup = asyncHandler(async (req, res) => {
                 .json({ error: "Password must be at least 8 characters long" });
         }
 
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
-
         const createdUser = new User({
             name,
             email,
             username,
-            password: hashedPassword,
+            password: await hashString(password),
         });
 
         if (createdUser) {
