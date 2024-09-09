@@ -43,7 +43,7 @@ const router = createBrowserRouter([
             {
                 path: "/create-post",
                 element: (
-                    <Protected isAuthenticated={false}>
+                    <Protected isAuthenticated>
                         <CreatePost />
                     </Protected>
                 ),
@@ -51,7 +51,7 @@ const router = createBrowserRouter([
             {
                 path: "/",
                 element: (
-                    <Protected isAuthenticated={false}>
+                    <Protected isAuthenticated>
                         <Home />
                     </Protected>
                 ),
@@ -59,7 +59,7 @@ const router = createBrowserRouter([
             {
                 path: "/profile",
                 element: (
-                    <Protected isAuthenticated={false}>
+                    <Protected isAuthenticated>
                         <Profile />
                     </Protected>
                 ),

@@ -6,8 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 function BottomNavbar() {
-    // const authStatus = useSelector((state) => state.auth.status);
-    const authStatus = false;
+    const authStatus = useSelector((state) => state.auth.status);
     const navigate = useNavigate();
     const [activeButton, setActiveButton] = useState("home");
 
