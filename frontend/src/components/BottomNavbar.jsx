@@ -1,14 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import HomeIcon from "@mui/icons-material/Home";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import PersonIcon from "@mui/icons-material/Person";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 function BottomNavbar() {
     const authStatus = useSelector((state) => state.auth.status);
     const navigate = useNavigate();
+    const location = useLocation();
+
     const [activeButton, setActiveButton] = useState("home");
+
+    useEffect(() => {
+        const currentPath = location.pathname;
+
+        const pathToValueMap = {
+            "/": "home",
+            "/create-post": "create",
+            "/profile": "profile",
+        };
+
+        const activeValue = pathToValueMap[currentPath] || "home";
+        setActiveButton(activeValue);
+    }, [location.pathname]);
 
     const items = [
         {

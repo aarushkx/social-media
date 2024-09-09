@@ -47,7 +47,7 @@ function App() {
     ) : (
         <>
             <div className="flex justify-center items-center h-screen">
-                Loading...
+                <span className="loading loading-dots loading-lg"></span>
             </div>
         </>
     );
