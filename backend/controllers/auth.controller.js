@@ -75,7 +75,7 @@ export const signup = asyncHandler(async (req, res) => {
             _id: createdUser._id,
             name: createdUser.name,
             email: createdUser.email,
-            username: createdUser.username,
+            username: createdUser.username.toLowerCase(),
             followers: createdUser.followers,
             following: createdUser.following,
             avatar: createdUser.avatar,

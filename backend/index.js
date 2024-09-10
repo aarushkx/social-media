@@ -1,11 +1,9 @@
 import dotenv from "dotenv";
 import connectMongoDB from "./db/connectMongoDB.js";
-import { app } from "./app.js";
 import { v2 as cloudinary } from "cloudinary";
+import { app } from "./app.js";
 
-dotenv.config({
-    path: "./.env",
-});
+dotenv.config();
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

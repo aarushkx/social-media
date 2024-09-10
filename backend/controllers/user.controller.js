@@ -1,5 +1,8 @@
 import { asyncHandler } from "../utils/handlers/asyncHandler.js";
-import { v2 as cloudinary } from "cloudinary";
+import {
+    uploadOnCloudinary,
+    deleteOnCloudinary,
+} from "../utils/handlers/cloudinary.js";
 import User from "../models/user.model.js";
 import Post from "../models/post.model.js";
 import bcrypt from "bcrypt";
@@ -67,13 +70,20 @@ export const followUnfollowUser = asyncHandler(async (req, res) => {
 export const updateUserProfile = asyncHandler(async (req, res) => {
     const { name, email, username, bio, link, currentPassword, newPassword } =
         req.body;
-    let { avatar } = req.body;
+
+    const avatarLocalPath = req.file?.path;
 
     let user = await User.findById(req.user._id);
 
     if (!user) {
         return res.status(404).json({
             error: "User not found",
+        });
+    }
+
+    if ([name, username, email].some((field) => field?.trim() === "")) {
+        return res.status(400).json({
+            error: "Name, username, and email cannot be empty",
         });
     }
 
@@ -133,15 +143,22 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
         user.username = username;
     }
 
-    if (avatar) {
+    if (avatarLocalPath) {
         if (user.avatar) {
-            await cloudinary.uploader.destroy(
+            await deleteOnCloudinary(
                 user.avatar.split("/").pop().split(".")[0]
             );
         }
-        const uploadedAvatar = await cloudinary.uploader.upload(avatar);
-        avatar = uploadedAvatar.secure_url;
-        user.avatar = avatar;
+
+        const uploadedAvatar = await uploadOnCloudinary(avatarLocalPath);
+
+        if (!uploadedAvatar) {
+            return res.status(400).json({
+                error: "Failed to upload avatar",
+            });
+        }
+
+        user.avatar = uploadedAvatar.secure_url;
     }
 
     if (bio) {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { BottomNavbar, Footer } from "./components/index.js";
+import { BottomNavbar, PageLoading } from "./components/index.js";
 import { Outlet } from "react-router-dom";
 import axios from "axios";
 import { AUTH_API_ENDPOINT } from "./endpoints.js";
@@ -45,11 +45,7 @@ function App() {
             <BottomNavbar />
         </>
     ) : (
-        <>
-            <div className="flex justify-center items-center h-screen">
-                <span className="loading loading-dots loading-lg"></span>
-            </div>
-        </>
+        <PageLoading />
     );
 }
 

@@ -8,7 +8,7 @@ import LoginForm from "./Form/LoginForm";
 import Post from "./Post";
 import BottomNavbar from "./BottomNavbar";
 import Create from "./Create";
-import EditProfileModal from "./Modal/EditProfileModal";
+import PageLoading from "./PageLoading";
 import Protected from "./Protected";
 
 export {
@@ -22,6 +22,6 @@ export {
     Post,
     BottomNavbar,
     Create,
-    EditProfileModal,
+    PageLoading,
     Protected,
 };

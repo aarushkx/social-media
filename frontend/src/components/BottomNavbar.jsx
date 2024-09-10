@@ -19,6 +19,7 @@ function BottomNavbar() {
             "/": "home",
             "/create-post": "create",
             "/profile": "profile",
+            "/profile/edit": "profile",
         };
 
         const activeValue = pathToValueMap[currentPath] || "home";
@@ -70,7 +71,6 @@ function BottomNavbar() {
                         }`}
                     >
                         {item.icon}
-                        {/* <span className="text-xs">{item.name}</span> */}
                     </button>
                 ) : null
             )}

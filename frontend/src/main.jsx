@@ -11,6 +11,7 @@ import {
     SignUp,
     Home,
     Profile,
+    EditProfile,
     CreatePost,
     NotFoundPage,
 } from "./pages/index.js";
@@ -61,6 +62,14 @@ const router = createBrowserRouter([
                 element: (
                     <Protected isAuthenticated>
                         <Profile />
+                    </Protected>
+                ),
+            },
+            {
+                path: "/profile/edit",
+                element: (
+                    <Protected isAuthenticated>
+                        <EditProfile />
                     </Protected>
                 ),
             },

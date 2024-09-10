@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Search, EditProfileModal } from "../components/index.js";
+import { Search } from "../components/index.js";
 import LinkIcon from "@mui/icons-material/Link";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUserProfile, updateUserProfile } from "../features/userSlice.js";
+import { fetchUserProfile } from "../features/userSlice.js";
 import axios from "axios";
 import { POST_API_ENDPOINT } from "../endpoints.js";
 
 function Profile() {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const { profileData, loading, error } = useSelector((state) => state.user);
     const user = useSelector((state) => state.auth.userData);
 
-    const [isEditProfileModalOpen, setEditProfileModalOpen] = useState(false);
     const [posts, setPosts] = useState([]);
     const [postLoading, setPostLoading] = useState(true);
     const [postError, setPostError] = useState("");
@@ -51,12 +51,13 @@ function Profile() {
         }
     }, [user.username]);
 
-    const handleProfileUpdate = (updatedProfile) => {
-        dispatch(updateUserProfile(updatedProfile));
-    };
-
-    if (error)
-        return <p className="text-center text-red-600 min-h-screen">{error}</p>;
+    if (error) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <p className="text-center text-red-600">{error}</p>
+            </div>
+        );
+    }
 
     return (
         <>
@@ -69,7 +70,7 @@ function Profile() {
                             <img
                                 src={profileData?.avatar}
                                 alt={`${profileData?.name} avatar`}
-                                className="w-36 h-36 rounded-full object-cover"
+                                className="w-36 h-36 rounded-full object-cover bg-base-300"
                             />
                         </div>
                         <div className="lg:col-span-2">
@@ -104,20 +105,14 @@ function Profile() {
                                 <button
                                     className="btn btn-outline btn-sm text-sm"
                                     onClick={() =>
-                                        setEditProfileModalOpen(true)
+                                        // setEditProfileModalOpen(true)
+                                        navigate("/profile/edit")
                                     }
                                 >
                                     Edit Profile
                                 </button>
-
-                                <EditProfileModal
-                                    isOpen={isEditProfileModalOpen}
-                                    onClose={() =>
-                                        setEditProfileModalOpen(false)
-                                    }
-                                    onSave={handleProfileUpdate}
-                                />
                             </div>
+
                             {/* Profile Stats Section */}
                             <div className="flex space-x-4 justify-center lg:justify-start">
                                 <div>
