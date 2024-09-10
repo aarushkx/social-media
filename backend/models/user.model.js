@@ -23,7 +23,11 @@ const userSchema = new Schema(
         },
         followers: [{ type: Schema.Types.ObjectId, ref: "User", default: [] }],
         following: [{ type: Schema.Types.ObjectId, ref: "User", default: [] }],
-        avatar: { type: String, default: "" },
+        avatar: {
+            type: String,
+            default:
+                "https://res.cloudinary.com/dzphi4kzy/image/upload/v1725940897/dgoyjxh4nfufgs3hyyme.png",
+        },
         bio: { type: String, default: "" },
         link: { type: String, default: "" },
     },

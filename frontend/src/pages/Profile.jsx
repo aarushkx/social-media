@@ -55,7 +55,8 @@ function Profile() {
         dispatch(updateUserProfile(updatedProfile));
     };
 
-    if (error) return <p className="text-center text-red-600">{error}</p>;
+    if (error)
+        return <p className="text-center text-red-600 min-h-screen">{error}</p>;
 
     return (
         <>
@@ -66,30 +67,38 @@ function Profile() {
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8 p-4 pb-0">
                         <div className="flex justify-center lg:justify-center lg:col-span-1">
                             <img
-                                src={
-                                    profileData?.avatar || "/avatar/default.png"
-                                }
+                                src={profileData?.avatar}
                                 alt={`${profileData?.name} avatar`}
                                 className="w-36 h-36 rounded-full object-cover"
                             />
                         </div>
                         <div className="lg:col-span-2">
-                            <div className="mb-4">
+                            <div className="mb-2">
                                 <h1 className="text-2xl font-bold">
                                     {profileData?.name}
                                 </h1>
-                                <h2 className="text-base text-gray-500 mt-1">
+                                <h2 className="text-base text-gray-500">
                                     @{profileData?.username}
                                 </h2>
                             </div>
-                            <p className="mb-2 text-sm">{profileData?.bio}</p>
-                            <LinkIcon fontSize="small" />{" "}
-                            <Link
-                                to={profileData?.link || "/default-profile"}
-                                className="text-sm text-blue-500 underline mb-4 inline-block"
-                            >
-                                {profileData?.link}
-                            </Link>
+                            {profileData?.bio && (
+                                <p className="mb-2 text-sm">
+                                    {profileData?.bio}
+                                </p>
+                            )}
+
+                            {profileData?.link && (
+                                <p className="mb-4 text-sm">
+                                    <LinkIcon fontSize="small" />{" "}
+                                    <Link
+                                        to={profileData?.link}
+                                        className="text-blue-500 underline"
+                                    >
+                                        {profileData?.link}
+                                    </Link>
+                                </p>
+                            )}
+
                             {/* Edit Profile Button */}
                             <div className="mb-8">
                                 <button
@@ -179,11 +188,11 @@ function Profile() {
                         <div className="flex justify-center lg:justify-center lg:col-span-1">
                             <div className="skeleton h-32 w-32 shrink-0 rounded-full"></div>
                         </div>
-                        <div className="lg:col-span-2">
-                            <div className="skeleton h-8 w-28 mb-6"></div>
-                            <div className="skeleton h-4 w-16 mb-4"></div>
+                        <div className="lg:col-span-2 mt-4">
+                            <div className="skeleton h-8 w-28 mb-2"></div>
+                            <div className="skeleton h-4 w-24 mb-4"></div>
                             <div className="skeleton h-4 w-56 mb-4"></div>
-                            <div className="skeleton h-4 w-36 mb-4"></div>
+                            <div className="skeleton h-4 w-36 mb-2"></div>
 
                             <div className="skeleton h-8 w-24 mb-8"></div>
 

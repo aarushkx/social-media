@@ -137,7 +137,7 @@ function Create() {
                     {image && (
                         <div
                             className="mb-4 relative w-full"
-                            style={{ paddingTop: "133.33%" }}
+                            style={{ paddingTop: "100%" }}
                         >
                             <img
                                 src={image}
