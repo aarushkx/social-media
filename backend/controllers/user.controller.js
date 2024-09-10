@@ -4,6 +4,7 @@ import {
     deleteOnCloudinary,
 } from "../utils/handlers/cloudinary.js";
 import User from "../models/user.model.js";
+import Verified from "../models/verified.model.js";
 import Post from "../models/post.model.js";
 import bcrypt from "bcrypt";
 import { hashString } from "../utils/hash/hashString.js";
@@ -17,6 +18,11 @@ export const getUserProfile = asyncHandler(async (req, res) => {
             error: "User not found",
         });
     }
+
+    const verified = await Verified.findOne({
+        userIds: user._id,
+    });
+    user.isVerified = verified ? true : false;
 
     return res.status(200).json(user);
 });

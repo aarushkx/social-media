@@ -63,7 +63,7 @@ export const signup = asyncHandler(async (req, res) => {
     const createdUser = new User({
         name,
         email,
-        username,
+        username: username.toLowerCase(),
         password: await hashString(password),
     });
 
@@ -75,7 +75,7 @@ export const signup = asyncHandler(async (req, res) => {
             _id: createdUser._id,
             name: createdUser.name,
             email: createdUser.email,
-            username: createdUser.username.toLowerCase(),
+            username: createdUser.username,
             followers: createdUser.followers,
             following: createdUser.following,
             avatar: createdUser.avatar,

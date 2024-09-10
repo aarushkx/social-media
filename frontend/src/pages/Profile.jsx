@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Search } from "../components/index.js";
 import LinkIcon from "@mui/icons-material/Link";
+import VerifiedIcon from "@mui/icons-material/Verified";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserProfile } from "../features/userSlice.js";
@@ -79,7 +80,13 @@ function Profile() {
                                     {profileData?.name}
                                 </h1>
                                 <h2 className="text-base text-gray-500">
-                                    @{profileData?.username}
+                                    @{profileData?.username}{" "}
+                                    {profileData?.isVerified && (
+                                        <VerifiedIcon
+                                            color="primary"
+                                            fontSize="small"
+                                        />
+                                    )}
                                 </h2>
                             </div>
                             {profileData?.bio && (
@@ -104,10 +111,7 @@ function Profile() {
                             <div className="mb-8">
                                 <button
                                     className="btn btn-outline btn-sm text-sm"
-                                    onClick={() =>
-                                        // setEditProfileModalOpen(true)
-                                        navigate("/profile/edit")
-                                    }
+                                    onClick={() => navigate("/profile/edit")}
                                 >
                                     Edit Profile
                                 </button>
