@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Logo } from "../index.js";
 import { LogoutButton } from "../index.js";
+import { useSelector } from "react-redux";
 
 function Header({ isSliding }) {
+    const authStatus = useSelector((state) => state.auth.status);
+
     const [isVisible, setIsVisible] = useState(true);
     let lastScrollY = 0;
 
@@ -23,7 +26,7 @@ function Header({ isSliding }) {
 
     return (
         <div
-            className={`header bg-base-300 p-4 fixed top-0 w-full z-10 ${
+            className={`header flex justify-between bg-base-300 p-4 fixed top-0 w-full z-10 ${
                 isSliding
                     ? `transition-transform duration-300 ${
                           isVisible ? "translate-y-0" : "-translate-y-full"
@@ -32,7 +35,7 @@ function Header({ isSliding }) {
             }`}
         >
             <Logo />
-            <LogoutButton />
+            {authStatus && <LogoutButton />}
         </div>
     );
 }

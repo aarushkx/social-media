@@ -2,38 +2,77 @@ import React, { useState, useEffect } from "react";
 import { Search } from "../components/index.js";
 import LinkIcon from "@mui/icons-material/Link";
 import VerifiedIcon from "@mui/icons-material/Verified";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUserProfile } from "../features/userSlice.js";
+import { fetchUserProfile, updateUserProfile } from "../features/userSlice.js";
 import axios from "axios";
-import { POST_API_ENDPOINT } from "../endpoints.js";
+import { POST_API_ENDPOINT, USER_API_ENDPOINT } from "../endpoints.js";
+import { PageLoading } from "../components/index.js";
 
-function Profile() {
+function SearchedUserProfile() {
     const navigate = useNavigate();
+    const { username } = useParams();
     const dispatch = useDispatch();
-
     const { profileData, loading, error } = useSelector((state) => state.user);
     const user = useSelector((state) => state.auth.userData);
 
+    const [isFollowing, setIsFollowing] = useState(false);
     const [posts, setPosts] = useState([]);
     const [postLoading, setPostLoading] = useState(true);
     const [postError, setPostError] = useState("");
 
-    // Fetch user profile data
     useEffect(() => {
-        if (user._id) {
-            dispatch(fetchUserProfile(user._id));
+        if (username) {
+            dispatch(fetchUserProfile(username));
         }
-    }, [dispatch, user._id]);
+    }, [dispatch, username]);
 
-    // Fetch user posts
     useEffect(() => {
-        setPostLoading(true);
+        if (profileData?.followers?.includes(user._id)) {
+            setIsFollowing(true);
+        } else {
+            setIsFollowing(false);
+        }
+    }, [profileData, user._id]);
 
+    useEffect(() => {
+        if (user?.username === username) {
+            navigate("/profile");
+        }
+    }, [user, username, navigate]);
+
+    const handleFollowUnfollow = async () => {
+        try {
+            await axios.post(
+                `${USER_API_ENDPOINT}/follow-unfollow/${profileData._id}`,
+                {},
+                {
+                    withCredentials: true,
+                }
+            );
+
+            setIsFollowing(!isFollowing);
+
+            const updatedFollowers = isFollowing
+                ? profileData.followers.filter((id) => id !== user._id)
+                : [...profileData.followers, user._id];
+
+            dispatch(
+                updateUserProfile({
+                    ...profileData,
+                    followers: updatedFollowers,
+                })
+            );
+        } catch (error) {
+            console.error("Error following/unfollowing user: ", error);
+        }
+    };
+
+    useEffect(() => {
         const fetchUserPosts = async () => {
             try {
                 const response = await axios.get(
-                    `${POST_API_ENDPOINT}/user/${user.username}`,
+                    `${POST_API_ENDPOINT}/user/${username}`,
                     {
                         withCredentials: true,
                     }
@@ -49,10 +88,10 @@ function Profile() {
             }
         };
 
-        if (user.username) {
+        if (username) {
             fetchUserPosts();
         }
-    }, [user.username]);
+    }, [username]);
 
     if (error) {
         return (
@@ -109,13 +148,17 @@ function Profile() {
                                 </p>
                             )}
 
-                            {/* Edit Profile Button */}
+                            {/* Follow/Unfollow Button */}
                             <div className="mb-8">
                                 <button
-                                    className="btn btn-outline btn-sm text-sm"
-                                    onClick={() => navigate("/profile/edit")}
+                                    className={`btn ${
+                                        isFollowing
+                                            ? "btn-outline"
+                                            : "btn-primary"
+                                    } btn-sm text-sm`}
+                                    onClick={handleFollowUnfollow}
                                 >
-                                    Edit Profile
+                                    {isFollowing ? "Unfollow" : "Follow"}
                                 </button>
                             </div>
 
@@ -170,42 +213,23 @@ function Profile() {
                                 >
                                     <img
                                         src={post.image}
-                                        alt="User post"
-                                        className="absolute inset-0 w-full h-full object-cover"
+                                        alt={post.title}
+                                        className="absolute inset-0 object-cover w-full h-full"
                                     />
                                 </div>
                             ))
                         ) : (
                             <p className="col-span-3 text-center">
-                                You don't have any posts yet
+                                {profileData?.name} has not posted yet.
                             </p>
                         )}
                     </div>
                 </div>
             ) : (
-                // Skeleton UI
-                <div className="container mx-auto">
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8 p-4 pb-0">
-                        <div className="flex justify-center lg:justify-center lg:col-span-1">
-                            <div className="skeleton h-32 w-32 shrink-0 rounded-full"></div>
-                        </div>
-                        <div className="lg:col-span-2 mt-4">
-                            <div className="skeleton h-8 w-28 mb-2"></div>
-                            <div className="skeleton h-4 w-24 mb-4"></div>
-                            <div className="skeleton h-4 w-56 mb-4"></div>
-                            <div className="skeleton h-4 w-36 mb-2"></div>
-
-                            <div className="skeleton h-8 w-24 mb-8"></div>
-
-                            <div className="flex space-x-4 justify-center lg:justify-start">
-                                <div className="skeleton text-center h-5 w-72 mb-4"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <PageLoading />
             )}
         </>
     );
 }
 
-export default Profile;
+export default SearchedUserProfile;

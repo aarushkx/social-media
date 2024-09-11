@@ -14,6 +14,7 @@ import {
     EditProfile,
     CreatePost,
     NotFoundPage,
+    SearchedUserProfile,
 } from "./pages/index.js";
 
 const router = createBrowserRouter([
@@ -70,6 +71,14 @@ const router = createBrowserRouter([
                 element: (
                     <Protected isAuthenticated>
                         <EditProfile />
+                    </Protected>
+                ),
+            },
+            {
+                path: "/profile/:username",
+                element: (
+                    <Protected isAuthenticated>
+                        <SearchedUserProfile />
                     </Protected>
                 ),
             },

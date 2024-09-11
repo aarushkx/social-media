@@ -275,7 +275,7 @@ export const searchUsers = asyncHandler(async (req, res) => {
     const regexQuery = new RegExp(query, "i");
     const users = await User.find({
         $or: [{ username: regexQuery }, { name: regexQuery }],
-    }).select("username name avatar");
+    }).select("username name avatar isVerified");
 
     if (users.length === 0) {
         return res.status(200).json({

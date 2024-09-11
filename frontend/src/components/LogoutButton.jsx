@@ -31,7 +31,7 @@ function LogoutButton() {
     return (
         <button
             onClick={handleLogout}
-            className="btn btn-outline btn-sm text-sm flex items-center space-x-2"
+            className="btn btn-ghost btn-sm flex items-center space-x-2"
         >
             <LogoutIcon />
         </button>

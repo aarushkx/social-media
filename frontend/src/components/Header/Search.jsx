@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { Search as SearchIcon } from "@mui/icons-material";
+import VerifiedIcon from "@mui/icons-material/Verified";
 import { USER_API_ENDPOINT } from "../../endpoints.js";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Search() {
+    const navigate = useNavigate();
+
     const [searchTerm, setSearchTerm] = useState("");
     const [searchResults, setSearchResults] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -60,23 +64,44 @@ function Search() {
                                 {searchResults.map((user) => (
                                     <li
                                         key={user._id}
-                                        className="p-2 border-b last:border-none"
+                                        onClick={() =>
+                                            navigate(
+                                                `/profile/${user.username}`
+                                            )
+                                        }
+                                        className="p-2 border-b border-gray-700 rounded-xl last:border-none cursor-pointer hover:bg-base-300"
                                     >
                                         <div className="flex items-center">
+                                            {/* User Avatar */}
                                             <img
                                                 src={user.avatar}
                                                 alt={user.username}
-                                                className="w-8 h-8 rounded-full mr-3"
+                                                className="w-12 h-12 object-cover rounded-full mr-3"
                                             />
-                                            <span>
-                                                {user.name} (@{user.username})
-                                            </span>
+                                            <div>
+                                                {/* Username and Verified Badge */}
+                                                <div className="flex items-center space-x-1">
+                                                    <span className="font-bold">
+                                                        @{user.username}
+                                                    </span>
+                                                    {user.isVerified && (
+                                                        <VerifiedIcon
+                                                            color="primary"
+                                                            fontSize="small"
+                                                        />
+                                                    )}
+                                                </div>
+                                                {/* User Name */}
+                                                <span className="text-gray-500">
+                                                    {user.name}
+                                                </span>
+                                            </div>
                                         </div>
                                     </li>
                                 ))}
                             </ul>
                         ) : (
-                            <p>No results found.</p>
+                            <p>No users found.</p>
                         )}
                     </div>
                 </div>

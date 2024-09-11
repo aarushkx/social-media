@@ -10,7 +10,7 @@ function BottomNavbar() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const [activeButton, setActiveButton] = useState("home");
+    const [activeButton, setActiveButton] = useState("profile");
 
     useEffect(() => {
         const currentPath = location.pathname;
@@ -22,7 +22,7 @@ function BottomNavbar() {
             "/profile/edit": "profile",
         };
 
-        const activeValue = pathToValueMap[currentPath] || "home";
+        const activeValue = pathToValueMap[currentPath] || "profile";
         setActiveButton(activeValue);
     }, [location.pathname]);
 
