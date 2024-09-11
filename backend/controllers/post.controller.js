@@ -162,9 +162,9 @@ export const getFollowingPosts = asyncHandler(async (req, res) => {
 });
 
 export const getUserPosts = asyncHandler(async (req, res) => {
-    const { userId } = req.params;
+    const { username } = req.params;
 
-    const user = await User.findOne({ userId });
+    const user = await User.findOne({ username });
     if (!user) {
         return res.status(404).json({ error: "User not found" });
     }

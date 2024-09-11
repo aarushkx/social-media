@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Logo } from "../index.js";
+import { LogoutButton } from "../index.js";
 
 function Header({ isSliding }) {
     const [isVisible, setIsVisible] = useState(true);
@@ -31,6 +32,7 @@ function Header({ isSliding }) {
             }`}
         >
             <Logo />
+            <LogoutButton />
         </div>
     );
 }

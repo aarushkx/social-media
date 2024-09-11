@@ -7,11 +7,20 @@ import User from "../models/user.model.js";
 import Post from "../models/post.model.js";
 import bcrypt from "bcrypt";
 import { hashString } from "../utils/hash/hashString.js";
+import mongoose from "mongoose";
 
 export const getUserProfile = asyncHandler(async (req, res) => {
-    const { userId } = req.params;
+    const identifier = req.params.identifier;
+    let user;
 
-    const user = await User.findOne({ userId }).select("-password");
+    if (mongoose.isValidObjectId(identifier)) {
+        user = await User.findById(identifier).select("-password");
+    } else {
+        user = await User.findOne({ username: identifier }).select(
+            "-password -email"
+        );
+    }
+
     if (!user) {
         return res.status(404).json({
             error: "User not found",
@@ -252,4 +261,27 @@ export const deleteUserAccount = asyncHandler(async (req, res) => {
     return res.status(200).json({
         message: "Account deleted successfully",
     });
+});
+
+export const searchUsers = asyncHandler(async (req, res) => {
+    const { query } = req.query;
+
+    if (!query || query.trim() === "") {
+        return res.status(400).json({
+            error: "Please provide a search query",
+        });
+    }
+
+    const regexQuery = new RegExp(query, "i");
+    const users = await User.find({
+        $or: [{ username: regexQuery }, { name: regexQuery }],
+    }).select("username name avatar");
+
+    if (users.length === 0) {
+        return res.status(200).json({
+            message: "No users found",
+        });
+    }
+
+    return res.status(200).json(users);
 });
