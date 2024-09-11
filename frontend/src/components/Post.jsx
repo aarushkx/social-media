@@ -1,7 +1,9 @@
 import React from "react";
+import VerifiedIcon from "@mui/icons-material/Verified";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder"; // Unfilled heart for unliked posts
 import FavoriteIcon from "@mui/icons-material/Favorite"; // Filled heart for liked posts
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
+import { formatDate } from "../utils/formatDate.js";
 
 function Post({ post }) {
     return (
@@ -9,19 +11,22 @@ function Post({ post }) {
             {/* Header with avatar and username */}
             <div className="flex items-center mb-4">
                 <img
-                    src={post.avatar}
-                    alt={`${post.username} avatar`}
+                    src={post.user.avatar}
+                    alt={`${post.user.username} avatar`}
                     className="w-10 h-10 rounded-full object-cover mr-4"
                 />
-                <span className="font-bold">{post.username}</span>
+                <span className="font-bold">
+                    {post.user.username}{" "}
+                    {post.user.isVerified && (
+                        <VerifiedIcon color="primary" fontSize="small" />
+                    )}
+                </span>
             </div>
 
             {/* Post Image */}
             <div
                 className="relative w-full"
                 style={{
-                    // paddingTop: "125%" /* 4:3 */,
-                    // paddingTop: "80%", /* 4:5 */
                     paddingTop: "100%" /* 1:1 */,
                 }}
             >
@@ -37,24 +42,26 @@ function Post({ post }) {
             <div className="flex space-x-4 mb-4 mt-4">
                 <button className="flex items-center space-x-1 focus:outline-none">
                     <FavoriteBorderIcon sx={{ marginRight: "0.5rem" }} />
-                    {post.likes}
+                    {post.likes.length}
                 </button>
                 <button className="flex items-center space-x-1 focus:outline-none">
                     <ChatBubbleOutlineOutlinedIcon
                         sx={{ marginRight: "0.5rem" }}
                     />
-                    {post.comments}
+                    {post.comments.length}
                 </button>
             </div>
 
             {/* Caption */}
             <div className="mb-2 text-sm">
-                <span className="font-bold">{post.username}</span>{" "}
+                <span className="font-bold">{post.user.username}</span>{" "}
                 {post.caption}
             </div>
 
             {/* Date */}
-            <div className="text-gray-500 text-sm">{post.date}</div>
+            <div className="text-gray-500 text-sm">
+                {formatDate(new Date(post.createdAt))}
+            </div>
         </div>
     );
 }

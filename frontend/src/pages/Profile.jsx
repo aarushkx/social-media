@@ -21,10 +21,10 @@ function Profile() {
 
     // Fetch user profile data
     useEffect(() => {
-        if (user.username) {
-            dispatch(fetchUserProfile(user.username));
+        if (user._id) {
+            dispatch(fetchUserProfile(user._id));
         }
-    }, [dispatch, user.username]);
+    }, [dispatch, user._id]);
 
     // Fetch user posts
     useEffect(() => {

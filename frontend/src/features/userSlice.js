@@ -4,10 +4,10 @@ import { USER_API_ENDPOINT } from "../endpoints.js";
 
 export const fetchUserProfile = createAsyncThunk(
     "user/fetchUserProfile",
-    async (username, thunkAPI) => {
+    async (userId, thunkAPI) => {
         try {
             const response = await axios.get(
-                `${USER_API_ENDPOINT}/profile/${username}`,
+                `${USER_API_ENDPOINT}/profile/${userId}`,
                 {
                     withCredentials: true,
                 }
