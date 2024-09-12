@@ -1,13 +1,16 @@
 import Post from "../models/post.model.js";
 import User from "../models/user.model.js";
 import { asyncHandler } from "../utils/handlers/asyncHandler.js";
-import { v2 as cloudinary } from "cloudinary";
+import {
+    uploadOnCloudinary,
+    deleteFromCloudinary,
+} from "../utils/handlers/cloudinary.js";
 
 export const createPost = asyncHandler(async (req, res) => {
     const { caption } = req.body;
-    let { image } = req.body;
+    const imageLocalPath = req.file?.path;
 
-    const user = await User.findById(req.user._id.toString());
+    const user = await User.findById(req.user._id);
 
     if (!user) {
         return res.status(404).json({
@@ -15,14 +18,22 @@ export const createPost = asyncHandler(async (req, res) => {
         });
     }
 
-    if (!image) {
+    if (!imageLocalPath) {
+        console.log("ERROR: NO IMAGE FILE");
         return res.status(400).json({
             error: "Image is required",
         });
     }
 
-    const uploadResponse = await cloudinary.uploader.upload(image);
-    image = uploadResponse.secure_url;
+    const uploadedImage = await uploadOnCloudinary(imageLocalPath);
+
+    if (!uploadedImage) {
+        return res.status(500).json({
+            error: "Failed to upload image",
+        });
+    }
+
+    const image = uploadedImage.secure_url;
 
     const newPost = await Post({
         user: req.user._id,
@@ -48,8 +59,11 @@ export const deletePost = asyncHandler(async (req, res) => {
             .json({ error: "You are not authorized to delete this post" });
     }
 
-    const imageId = post.image.split("/").pop().split(".")[0];
-    await cloudinary.uploader.destroy(imageId);
+    const imageDeleted = await deleteFromCloudinary(post.image);
+
+    if (!imageDeleted) {
+        return res.status(500).json({ error: "Failed to delete post image" });
+    }
 
     await Post.findByIdAndDelete(req.params.id);
 

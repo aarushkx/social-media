@@ -1,21 +1,65 @@
 import React, { useState } from "react";
+import { POST_API_ENDPOINT } from "../endpoints.js";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Create() {
-    const [image, setImage] = useState(null);
+    const navigate = useNavigate();
+
+    const [imageFile, setImageFile] = useState(null);
     const [caption, setCaption] = useState("");
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [imagePreview, setImagePreview] = useState(null);
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            setImage(URL.createObjectURL(file));
+            setImageFile(file);
+            setImagePreview(URL.createObjectURL(file));
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Handle form submission here
-        console.log("Image:", image);
-        console.log("Caption:", caption);
+        setError("");
+        setLoading(true);
+
+        const formData = new FormData();
+
+        if (imageFile) {
+            formData.append("image", imageFile);
+        } else {
+            console.log("NO IMAGE FILE");
+            return;
+        }
+        formData.append("caption", caption);
+
+        try {
+            const response = await axios.post(
+                `${POST_API_ENDPOINT}/create`,
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                    withCredentials: true,
+                }
+            );
+
+            console.log("POST CREATED SUCCESSFULLY: ", response.data);
+            setImageFile(null);
+            setCaption("");
+            setImagePreview(null);
+            navigate("/");
+        } catch (error) {
+            setError(
+                error?.response?.data?.error ||
+                    "An error occurred while creating the post."
+            );
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -37,16 +81,12 @@ function Create() {
                     />
                 </div>
 
-                {image && (
-                    <div
-                        className="mb-4 relative w-full"
-                        style={{ paddingTop: "100%" }}
-                    >
+                {imagePreview && (
+                    <div className="mb-4 relative w-full pt-[100%]">
                         <img
-                            src={image}
+                            src={imagePreview}
                             alt="Preview"
                             className="absolute top-0 left-0 w-full h-full object-cover"
-                            style={{ objectFit: "cover" }}
                         />
                     </div>
                 )}
@@ -66,9 +106,16 @@ function Create() {
                 <button
                     type="submit"
                     className="btn btn-primary w-full text-lg mb-20"
+                    disabled={loading}
                 >
                     Post
                 </button>
+                {loading && <p>Loading...</p>}
+                {error && (
+                    <p className="text-red-500 text-sm text-center mb-4">
+                        {error}
+                    </p>
+                )}
             </form>
         </div>
     );

@@ -1,7 +1,7 @@
 import { asyncHandler } from "../utils/handlers/asyncHandler.js";
 import {
     uploadOnCloudinary,
-    deleteOnCloudinary,
+    deleteFromCloudinary,
 } from "../utils/handlers/cloudinary.js";
 import User from "../models/user.model.js";
 import Post from "../models/post.model.js";
@@ -154,9 +154,7 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
 
     if (avatarLocalPath) {
         if (user.avatar) {
-            await deleteOnCloudinary(
-                user.avatar.split("/").pop().split(".")[0]
-            );
+            await deleteFromCloudinary(user.avatar);
         }
 
         const uploadedAvatar = await uploadOnCloudinary(avatarLocalPath);
@@ -235,16 +233,14 @@ export const deleteUserAccount = asyncHandler(async (req, res) => {
 
     if (userPosts.length > 0) {
         const imageDeletions = userPosts.map(async (post) => {
-            const imageId = post.image.split("/").pop().split(".")[0];
-            await cloudinary.uploader.destroy(imageId);
+            await deleteFromCloudinary(post.image);
             await Post.findByIdAndDelete(post._id);
         });
         await Promise.all(imageDeletions);
     }
 
     if (user.avatar) {
-        const avatarId = user.avatar.split("/").pop().split(".")[0];
-        await cloudinary.uploader.destroy(avatarId);
+        await deleteFromCloudinary(user.avatar);
     }
 
     await User.updateMany(
