@@ -12,6 +12,7 @@ import { upload } from "../middlewares/multer.middleware.js";
 const router = express.Router();
 
 router.get("/profile/:identifier", protectRoute, getUserProfile);
+router.get("/search", protectRoute, searchUsers);
 router.post("/follow-unfollow/:id", protectRoute, followUnfollowUser);
 router.post(
     "/profile/update",
@@ -20,6 +21,5 @@ router.post(
     updateUserProfile
 );
 router.delete("/profile", protectRoute, deleteUserAccount);
-router.get("/search", protectRoute, searchUsers);
 
 export default router;

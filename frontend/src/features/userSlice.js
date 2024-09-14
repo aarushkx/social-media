@@ -11,7 +11,7 @@ export const fetchUserProfile = createAsyncThunk(
                 {
                     withCredentials: true,
                 }
-            );            
+            );
             return response.data;
         } catch (error) {
             return thunkAPI.rejectWithValue(

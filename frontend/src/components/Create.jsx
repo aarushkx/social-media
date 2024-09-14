@@ -47,7 +47,6 @@ function Create() {
                 }
             );
 
-            console.log("POST CREATED SUCCESSFULLY: ", response.data);
             setImageFile(null);
             setCaption("");
             setImagePreview(null);

@@ -2,7 +2,7 @@ import Container from "./Container/Container";
 import Header from "./Header/Header";
 import Logo from "./Header/Logo";
 import Search from "./Header/Search";
-import LogoutButton from "./LogoutButton";
+import Settings from "./Header/Settings";
 import Footer from "./Footer/Footer";
 import SignUpForm from "./Form/SignUpForm";
 import LoginForm from "./Form/LoginForm";
@@ -17,7 +17,7 @@ export {
     Header,
     Logo,
     Search,
-    LogoutButton,
+    Settings,
     Footer,
     SignUpForm,
     LoginForm,

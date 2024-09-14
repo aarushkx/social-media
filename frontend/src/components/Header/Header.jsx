@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Logo } from "../index.js";
-import { LogoutButton } from "../index.js";
+import { Settings } from "../index.js";
 import { useSelector } from "react-redux";
 
 function Header({ isSliding }) {
@@ -35,7 +35,7 @@ function Header({ isSliding }) {
             }`}
         >
             <Logo />
-            {authStatus && <LogoutButton />}
+            {authStatus && <Settings />}
         </div>
     );
 }
