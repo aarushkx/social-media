@@ -227,18 +227,19 @@ function Post({ post }) {
                         </div>
 
                         {/* Add Comment */}
-                        <div className="mt-4 flex items-center">
+                        <div className="mt-4 flex items-center w-full">
                             <input
                                 type="text"
                                 value={newComment}
                                 onChange={(e) => setNewComment(e.target.value)}
                                 placeholder="Add a comment..."
-                                className="input input-bordered flex-grow h-10 rounded-r-none focus:outline-none"
+                                className="input input-bordered flex-grow h-10 rounded-r-none focus:outline-none w-full"
                                 disabled={isSubmittingComment}
+                                style={{ minWidth: 0 }}
                             />
                             <button
                                 onClick={handleAddComment}
-                                className="btn btn-primary btn-sm h-10 rounded-l-none border-l-0 flex items-center justify-center"
+                                className="btn btn-primary btn-sm h-10 rounded-l-none border-l-0 flex-shrink-0"
                                 disabled={isSubmittingComment}
                             >
                                 <SendIcon />
