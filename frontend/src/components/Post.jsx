@@ -10,6 +10,7 @@ import { formatDate } from "../utils/formatDate.js";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { POST_API_ENDPOINT } from "../endpoints.js";
+import { Link } from "react-router-dom";
 
 function Post({ post }) {
     const user = useSelector((state) => state.auth.userData);
@@ -95,17 +96,22 @@ function Post({ post }) {
         <div className="bg-base-200 rounded shadow-md p-4 mb-4 max-w-md mx-auto">
             {/* Header with avatar and username */}
             <div className="flex items-center mb-4">
-                <img
-                    src={post.user.avatar}
-                    alt={`${post.user.username} avatar`}
-                    className="w-10 h-10 rounded-full object-cover mr-4"
-                />
-                <span className="font-bold">
-                    {post.user.username}{" "}
-                    {post.user.isVerified && (
-                        <VerifiedIcon color="primary" fontSize="small" />
-                    )}
-                </span>
+                <Link to={`/profile/${post.user.username}`}>
+                    <img
+                        src={post.user.avatar}
+                        alt={`${post.user.username} avatar`}
+                        className="w-10 h-10 rounded-full object-cover mr-4"
+                    />
+                </Link>
+                <Link to={`/profile/${post.user.username}`}>
+                    <span className="font-bold">
+                        {post.user.username}{" "}
+                        {post.user.isVerified && (
+                            <VerifiedIcon color="primary" fontSize="small" />
+                        )}
+                    </span>
+                </Link>
+
                 {/* Delete Icon */}
                 {user._id === post.user._id && (
                     <button

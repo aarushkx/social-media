@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Search } from "../components/index.js";
+import { Search, PostDisplayModal } from "../components/index.js";
 import LinkIcon from "@mui/icons-material/Link";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import { Link, useNavigate } from "react-router-dom";
@@ -18,6 +18,8 @@ function Profile() {
     const [posts, setPosts] = useState([]);
     const [postLoading, setPostLoading] = useState(true);
     const [postError, setPostError] = useState("");
+
+    const [selectedPost, setSelectedPost] = useState(null);
 
     // Fetch user profile data
     useEffect(() => {
@@ -167,6 +169,7 @@ function Profile() {
                                 <div
                                     key={post._id}
                                     className="relative w-full pt-[100%] hover:opacity-40 hover:cursor-pointer"
+                                    onClick={() => setSelectedPost(post)}
                                 >
                                     <img
                                         src={post.image}
@@ -181,6 +184,14 @@ function Profile() {
                             </p>
                         )}
                     </div>
+
+                    {/* Modal to display selected post */}
+                    {selectedPost && (
+                        <PostDisplayModal
+                            selectedPost={selectedPost}
+                            setSelectedPost={setSelectedPost}
+                        />
+                    )}
                 </div>
             ) : (
                 // Skeleton UI

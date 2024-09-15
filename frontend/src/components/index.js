@@ -11,6 +11,7 @@ import BottomNavbar from "./BottomNavbar";
 import Create from "./Create";
 import PageLoading from "./PageLoading";
 import Protected from "./Protected";
+import PostDisplayModal from "./PostDisplayModal";
 
 export {
     Container,
@@ -26,4 +27,5 @@ export {
     Create,
     PageLoading,
     Protected,
+    PostDisplayModal,
 };
