@@ -239,7 +239,9 @@ export const deleteUserAccount = asyncHandler(async (req, res) => {
         await Promise.all(imageDeletions);
     }
 
-    if (user.avatar) {
+    const defaultAvatar = "https://res.cloudinary.com/dzphi4kzy/image/upload/v1726399777/fbqtvodbsh3naitthqg0.png";
+
+    if (user.avatar && user.avatar !== defaultAvatar) {
         await deleteFromCloudinary(user.avatar);
     }
 
