@@ -13,7 +13,7 @@ function Settings() {
 
     const handleLogout = async () => {
         try {
-            const response = await axios.post(
+            await axios.post(
                 `${AUTH_API_ENDPOINT}/logout`,
                 {},
                 {
@@ -25,17 +25,16 @@ function Settings() {
             navigate("/login");
         } catch (error) {
             alert("Error logging out");
+        } finally {
+            setIsDeleting(false);
         }
     };
 
     const handleDeleteAccount = async () => {
         try {
-            const response = await axios.delete(
-                `${USER_API_ENDPOINT}/profilep`,
-                {
-                    withCredentials: true,
-                }
-            );
+            await axios.delete(`${USER_API_ENDPOINT}/profile`, {
+                withCredentials: true,
+            });
             dispatch(logout());
             dispatch(clearProfile());
             navigate("/login");
