@@ -43,6 +43,20 @@ function SearchedUserProfile() {
     }, [user, username, navigate]);
 
     const handleFollowUnfollow = async () => {
+        const wasFollowing = isFollowing;
+        setIsFollowing(!wasFollowing);
+
+        const updatedFollowers = !wasFollowing
+            ? [...profileData.followers, user._id]
+            : profileData.followers.filter((id) => id !== user._id);
+
+        dispatch(
+            updateUserProfile({
+                ...profileData,
+                followers: updatedFollowers,
+            })
+        );
+
         try {
             await axios.post(
                 `${USER_API_ENDPOINT}/follow-unfollow/${profileData._id}`,
@@ -51,21 +65,18 @@ function SearchedUserProfile() {
                     withCredentials: true,
                 }
             );
-
-            setIsFollowing(!isFollowing);
-
-            const updatedFollowers = isFollowing
-                ? profileData.followers.filter((id) => id !== user._id)
-                : [...profileData.followers, user._id];
-
+        } catch (error) {
+            alert("An error occurred while performing this action.");
+            setIsFollowing(wasFollowing);
+            const revertedFollowers = wasFollowing
+                ? [...profileData.followers, user._id]
+                : profileData.followers.filter((id) => id !== user._id);
             dispatch(
                 updateUserProfile({
                     ...profileData,
-                    followers: updatedFollowers,
+                    followers: revertedFollowers,
                 })
             );
-        } catch (error) {
-            console.error("Error following/unfollowing user: ", error);
         }
     };
 
