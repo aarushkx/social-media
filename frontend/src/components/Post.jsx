@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import { POST_API_ENDPOINT } from "../endpoints.js";
 import { Link } from "react-router-dom";
 
-function Post({ post }) {
+function Post({ post, onDelete }) {
     const user = useSelector((state) => state.auth.userData);
 
     const [likes, setLikes] = useState(post.likes);
@@ -61,7 +61,7 @@ function Post({ post }) {
                 { withCredentials: true }
             );
 
-            const newComment = {
+            const commentToAdd = {
                 text: newComment,
                 user: {
                     _id: user._id,
@@ -73,10 +73,10 @@ function Post({ post }) {
                 createdAt: response.data.createdAt,
             };
 
-            setComments([...comments, newComment]);
+            setComments((prevComments) => [...prevComments, commentToAdd]);
             setNewComment("");
         } catch (error) {
-            alert("An error occurred while adding the comment.");
+            alert("An error eoccurred while adding the comment.");
         } finally {
             setIsSubmittingComment(false);
         }
@@ -87,7 +87,10 @@ function Post({ post }) {
             await axios.delete(`${POST_API_ENDPOINT}/${post._id}`, {
                 withCredentials: true,
             });
+            onDelete(post._id);
         } catch (error) {
+            console.log(error);
+
             alert("An error occurred while deleting the post.");
         }
     };
@@ -161,7 +164,7 @@ function Post({ post }) {
                     <ChatBubbleOutlineOutlinedIcon
                         sx={{ marginRight: "0.5rem" }}
                     />
-                    {post.comments.length}
+                    {comments.length}
                 </button>
             </div>
 

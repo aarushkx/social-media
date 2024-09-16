@@ -48,6 +48,18 @@ function Home() {
         fetchPosts();
     }, [activeTab]);
 
+    const handleDeletePost = (postId) => {
+        if (activeTab === 0) {
+            setPostsForYou((prevPosts) =>
+                prevPosts.filter((post) => post._id !== postId)
+            );
+        } else if (activeTab === 1) {
+            setPostsFollowing((prevPosts) =>
+                prevPosts.filter((post) => post._id !== postId)
+            );
+        }
+    };
+
     return (
         <div className="flex flex-col min-h-screen mb-16">
             <Header isSliding={true} />
@@ -83,7 +95,11 @@ function Home() {
                 ) : activeTab === 0 ? (
                     postsForYou.length > 0 ? (
                         postsForYou.map((post) => (
-                            <Post key={post._id} post={post} />
+                            <Post
+                                key={post._id}
+                                post={post}
+                                onDelete={handleDeletePost}
+                            />
                         ))
                     ) : (
                         <p className="text-center">
@@ -92,7 +108,11 @@ function Home() {
                     )
                 ) : postsFollowing.length > 0 ? (
                     postsFollowing.map((post) => (
-                        <Post key={post._id} post={post} />
+                        <Post
+                            key={post._id}
+                            post={post}
+                            onDelete={handleDeletePost}
+                        />
                     ))
                 ) : (
                     <p className="text-center">No posts from followed users.</p>

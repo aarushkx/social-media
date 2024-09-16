@@ -31,6 +31,11 @@ function Settings() {
     };
 
     const handleDeleteAccount = async () => {
+        const confirmed = window.confirm(
+            "Are you sure you want to delete your account? This action cannot be undone."
+        );
+        if (!confirmed) return;
+
         try {
             await axios.delete(`${USER_API_ENDPOINT}/profile`, {
                 withCredentials: true,

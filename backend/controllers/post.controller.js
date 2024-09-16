@@ -62,7 +62,9 @@ export const deletePost = asyncHandler(async (req, res) => {
     const imageDeleted = await deleteFromCloudinary(post.image);
 
     if (!imageDeleted) {
-        return res.status(500).json({ error: "Failed to delete post image" });
+        return res
+            .status(500)
+            .json({ error: "Failed to delete post image from Cloudinary" });
     }
 
     await Post.findByIdAndDelete(req.params.id);
